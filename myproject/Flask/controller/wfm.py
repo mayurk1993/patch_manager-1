@@ -82,19 +82,35 @@ def right_script(rs_name, headers):
 
 
 ##############################################################################################
-# Receives bearer token, environment, release version from Router                            #
+# Receives bearer token, environment, release version, service from Router                   #
 # Creates URL with ENV and release version, and use URL in further execution name method     #
 # Uses bearer token to authenticate                                                          #
 # Returns list of Deployment objects                                                         #
 ##############################################################################################
-def get_deployment_details(env, rel_version, bearer_token):
+def get_deployment_details(env, rel_version,service, bearer_token):
     print("get_deployment_details method in controller")
-    URL = 'https://us-4.rightscale.com/api/deployments?filter[]=name==' + env + ' - ' + rel_version
+    
+    if("cfn" in env):
+        print("inside env.contains")
+        account = '106388'
+    
+    URL     = "https://us-4.rightscale.com/api/tags/by_tag"
     headers = {'X-API-Version': '1.5',
                'Content-Type': 'application/json',
+               'X-Account': account,
                'Authorization': 'Bearer ' + bearer_token}
-    r = requests.get(URL, headers=headers)
-    list_of_dep_objects = execution_name(r)
+    data    =   {"match_all": "true",
+                 "resource_type": "deployments",
+                 "tags": ["kronos:environment_name=" + env,
+                          "kronos:shared_service_type=" + service,
+                          "kronos:service_version=" + rel_version]
+                 }
+    
+    r = requests.post(URL, headers=headers, json=data)
+    print(r.content)
+#    r = requests.get(URL, headers=headers)
+#    list_of_dep_objects = execution_name(r)
+    list_of_dep_objects=[]
     return list_of_dep_objects
 
 
