@@ -9,7 +9,6 @@ sys.path.append(".")
 
 app = Flask(__name__)
 app.secret_key = 'My Keys'
-RS_URL = 'https://us-4.rightscale.com/'
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,6 +32,8 @@ def login():
         result = request.form
         environment = result['environment']
         rel_v = result['release_version']
+        service = result['service']
+        print(service)
         bearer_token = session['bearer_token']
         dep_list = wfm.get_deployment_details(environment, rel_v, bearer_token)
         session['dep_list'] = dep_list
