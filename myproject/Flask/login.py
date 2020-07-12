@@ -4,12 +4,14 @@ from controller import wfm
 from beans.User import User1
 import json
 import sys
+import logging
+
+logging.basicConfig(filename='app.log',level=logging.DEBUG)
 
 sys.path.append(".")
 
 app = Flask(__name__)
 app.secret_key = 'My Keys'
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -20,6 +22,7 @@ def login():
     if form.is_submitted() and form.submit.data:
         rs_token = request.form['password']
         obj = User1(rs_token)
+        logging.info("Authenticating User RS token")
         response = obj.authenticate_user(rs_token)
         if response.status_code == 200:
             session['bearer_token'] = obj.bearer_token
@@ -30,12 +33,12 @@ def login():
     if form1.is_submitted() and form1.proceed.data:
         print("inside form1 submitted")
         result = request.form
+        stack = result['stack']
         environment = result['environment']
         rel_v = result['release_version']
         service = result['service']
-        print(service)
         bearer_token = session['bearer_token']
-        dep_list = wfm.get_deployment_details(environment, rel_v, bearer_token)
+        dep_list = wfm.get_deployment_details(environment, rel_v, service, stack, bearer_token)
         session['dep_list'] = dep_list
         dep_list1 = []
         for i in dep_list:
