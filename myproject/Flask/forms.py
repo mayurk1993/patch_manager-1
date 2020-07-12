@@ -8,6 +8,7 @@ class SignUpForm(FlaskForm):
 
 
 class EnvironmentForm(FlaskForm):
+    stack = TextField('Stack')
     release_version = TextField('Release Version')
     environment = TextField('Environment')
     service = TextField('Service')
