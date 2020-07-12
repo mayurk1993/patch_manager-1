@@ -49,20 +49,21 @@ div {
 </style>
 
 <body>
+<img src="{{url_for('static',filename='images/kronos.PNG')}}" width="350" height="100">
 <br><h2>Authenticated successfully, Please Enter following details to proceed</h2><br>
 
-<form actions="" method="post">
-	
+<form action="{{ url_for('apply_patch') }}" method="post">
+
 	<p>
 		{{form.stack.label}}
 		{{form.stack(size=30)}}
 	</p>
-	
+
 	<p>
 		{{form.environment.label}}
 		{{form.environment(size=30)}}
 	</p>
-	
+
 	<p>
 		{{form.release_version.label}}
 		{{form.release_version(size=30)}}
@@ -72,11 +73,11 @@ div {
 		{{form.service.label}}
 		{{form.service(size=30)}}
 	</p>
-	
+
 	<p>{{form.proceed()}}</p>
-	
-	
-	
+
+
+
 </form>
 
 </body>
