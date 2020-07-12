@@ -60,13 +60,15 @@ div {
 <p>Enter RightScale Token to proceed</p>
 
 
-<form actions="" method="post">
+<form action="{{ url_for('deployment_info') }}" method="post">
 	<p>
 		{{form.password.label}}
 		{{form.password(size=30)}}
 	</p>
 	<p>{{form.submit()}}</p>
 </form>
+
+{% if message %}<p style="color:red;font-size:20px;"> {{ message }} {% endif %}
 
 </body>
 
