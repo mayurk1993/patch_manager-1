@@ -57,12 +57,7 @@ def apply_patch():
         for i in dep_list:
             a = json.loads(i)
             dep_list1.append(a)
-
         session['dep_list1'] = dep_list1
-
-        #        for i in dep_list:
-        #            print(i.self_service_url)
-
         if len(dep_list1) == 0:
             logging.error("Deployment received is empty")
             message = "No Deployments found for selected parameters."
@@ -86,9 +81,6 @@ def execute_right_script():
             logging.error("Entered Rightscript doesn't exist")
             message = "Entered Rightscript doesn't exist"
             return redirect(url_for('error', message=message, dep_list1=session['dep_list1']))
-
-        #        for response in my_list:
-        #            print(response.content)
         return render_template('fourth.html', form=form2, dep_list=session['dep_list1'])
 
 
